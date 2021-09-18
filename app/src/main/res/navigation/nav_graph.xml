@@ -8,16 +8,19 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.trendz.fragments.HomeFragment.HomeFragment"
-        android:label="fragment_home"
+        android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
             android:id="@+id/action_homeFragment_to_moviesFragment"
             app:destination="@id/moviesFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_movieDetailsFragment2"
+            app:destination="@id/movieDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/peopleFragment"
         android:name="com.example.trendz.fragments.PeopleFragment.PeopleFragment"
-        android:label="fragment_people"
+        android:label="Movie Stars"
         tools:layout="@layout/fragment_people" />
     <fragment
         android:id="@+id/bookmarkFragment"
@@ -28,16 +31,23 @@
         android:id="@+id/movieDetailsFragment"
         android:name="com.example.trendz.fragments.MovieDetailsFragment.MovieDetailsFragment"
         android:label="fragment_movie_details"
-        tools:layout="@layout/fragment_movie_details" />
+        tools:layout="@layout/fragment_movie_details" >
+        <argument
+            android:name="movieDetails"
+            app:argType="com.example.trendz.models.Result" />
+        <action
+            android:id="@+id/action_movieDetailsFragment_to_moviesFragment"
+            app:destination="@id/moviesFragment" />
+    </fragment>
     <fragment
         android:id="@+id/popularMoviesFragment"
         android:name="com.example.trendz.fragments.PopularMoviesFragment.PopularMoviesFragment"
-        android:label="fragment_popular_movies"
+        android:label="Popular Movies"
         tools:layout="@layout/fragment_popular_movies" />
     <fragment
         android:id="@+id/moviesFragment"
         android:name="com.example.trendz.fragments.MoviesFragment.MoviesFragment"
-        android:label="fragment_movies"
+        android:label="Movies"
         tools:layout="@layout/fragment_movies" >
         <action
             android:id="@+id/action_moviesFragment_to_homeFragment"
@@ -45,10 +55,13 @@
         <argument
             android:name="moviesList"
             app:argType="string" />
+        <action
+            android:id="@+id/action_moviesFragment_to_movieDetailsFragment"
+            app:destination="@id/movieDetailsFragment" />
     </fragment>
     <fragment
         android:id="@+id/upcomingMoviesFragment"
         android:name="com.example.trendz.fragments.UpcomingMoviesFragment.UpcomingMoviesFragment"
-        android:label="fragment_upcoming_movies"
+        android:label="Upcoming Movies"
         tools:layout="@layout/fragment_upcoming_movies" />
 </navigation>

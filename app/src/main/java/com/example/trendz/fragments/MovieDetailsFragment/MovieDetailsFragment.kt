@@ -1,60 +1,137 @@
 package com.example.trendz.fragments.MovieDetailsFragment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import android.view.View.GONE
+import android.view.View.VISIBLE
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
+import com.bumptech.glide.Glide
+import com.example.trendz.Adapters.ActorsListAdapter
+import com.example.trendz.Adapters.MovieGenreAdapter
 import com.example.trendz.R
+import com.example.trendz.fragments.MovieDetailsFragment.MovieDetailsFragmentArgs.Companion.fromBundle
+import com.example.trendz.models.Actors.Cast
+import com.example.trendz.models.Movie.Genre
+import com.example.trendz.utils.Constants
+import com.example.trendz.utils.Constants.API_KEY
+import com.example.trendz.utils.Constants.LANG_US
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_movie_details.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+@AndroidEntryPoint
+class MovieDetailsFragment : Fragment(R.layout.fragment_movie_details) {
+private  lateinit var args:MovieDetailsFragmentArgs
+lateinit var circularProgressDrawable:CircularProgressDrawable
+val movieDetailsViewModel: MovieDetailsViewModel by viewModels()
 
-/**
- * A simple [Fragment] subclass.
- * Use the [MovieDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class MovieDetailsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        //progress_movieDetails.visibility = VISIBLE
+        //movieDetailsParentLayout.visibility = GONE
+
+
+        circularProgressDrawable = CircularProgressDrawable(requireActivity())
+        circularProgressDrawable.strokeWidth = 5f
+        circularProgressDrawable.centerRadius = 30f
+        circularProgressDrawable.start()
+
+        args = arguments?.let {
+            fromBundle(it)
+        }!!
+        Log.d("argsdata",args.movieDetails.toString())
+
+        //get All movie Actors
+        movieDetailsViewModel.fetchMovieActors(
+            args.movieDetails.id,
+            API_KEY,
+            LANG_US
+        )
+
+        movieDetailsViewModel.fetchMovieDetails(
+                args.movieDetails.id,
+                API_KEY,
+                LANG_US
+        )
+
+
+
+
+    }
+
+    override fun onStart() {
+        super.onStart()
+        getMovieActors()
+        getMovieGenres()
+
+        movieDetailsViewModel.movieDetailsResponse.observe(viewLifecycleOwner, Observer {
+            if (it.isSuccessful){
+                //movieDetailsParentLayout.visibility = VISIBLE
+                //progress_movieDetails.visibility = GONE
+
+            it.body()?.let { movie ->
+                movieDetails_title.text = movie.title
+                movieDetails_overview_text.text = movie.overview
+                Glide.with(requireContext())
+                        .load(Constants.IMG_URL_INIT_PATH +movie.poster_path)
+                        .placeholder(circularProgressDrawable)
+                        .into(movieDetails_back_drop_image)
+                Glide.with(requireContext())
+                        .load(Constants.IMG_URL_INIT_PATH +movie.backdrop_path)
+                        .placeholder(circularProgressDrawable )
+                        .into(movieDetails_small_image)
+
+            }
+            }
+        })
+
+
+
+
+    }
+
+    fun initRecyclerviewActors(list:List<Cast>){
+        actors_recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireActivity(),
+                LinearLayoutManager.HORIZONTAL, false)
+            val actorsAdapter = ActorsListAdapter(list)
+            adapter = actorsAdapter
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_movie_details, container, false)
+    fun initRecyclerviewGenre(genreList:List<Genre>){
+        genres_recyclerView.apply {
+            layoutManager = LinearLayoutManager(requireActivity(),
+                    LinearLayoutManager.HORIZONTAL, false)
+            val genresAdapter = MovieGenreAdapter(genreList)
+            adapter = genresAdapter
+        }
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment MovieDetailsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            MovieDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
+    private fun getMovieGenres(){
+        movieDetailsViewModel.movieDetailsResponse.observe(viewLifecycleOwner, Observer {
+            it.body()?.genres.let { listGenres ->
+                if (listGenres != null) {
+                    initRecyclerviewGenre(listGenres)
+                    Log.d("genres",listGenres.toString() )
                 }
             }
+        })
     }
+
+
+    private fun getMovieActors(){
+        movieDetailsViewModel.movieActorsResponse.observe(viewLifecycleOwner, {
+            it.body()?.cast?.let { castList -> initRecyclerviewActors(castList) }
+            Log.d("actors", it.body()?.cast.toString())
+        })
+    }
+
+
 }

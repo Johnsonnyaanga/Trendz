@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.trendz.Adapters.HomeMovieListAdapter
 import com.example.trendz.Adapters.MovieListAdapter
 import com.example.trendz.R
 import com.example.trendz.fragments.PopularMoviesFragment.PopularViewModel
@@ -34,18 +35,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         displayPopularMovies()
         displayUpcomingMovies()
 
-        trending_movies_arrow.setOnClickListener{
-            val action = HomeFragmentDirections.actionHomeFragmentToMoviesFragment("trendingMovies")
-            findNavController().navigate(action)
-        }
+
 
         popular_movies_arrow.setOnClickListener{
-            val action = HomeFragmentDirections.actionHomeFragmentToMoviesFragment("popularMovies")
+            val action = HomeFragmentDirections.actionHomeFragmentToMoviesFragment("trendingMovies")
             findNavController().navigate(action)
 
         }
         upcoming_movies_arrow.setOnClickListener{
-            val action = HomeFragmentDirections.actionHomeFragmentToMoviesFragment("upcomingMovies")
+            val action = HomeFragmentDirections.actionHomeFragmentToMoviesFragment("trendingMovies")
+            findNavController().navigate(action)
+
+        }
+        trending_movies_arrow.setOnClickListener{
+            val action = HomeFragmentDirections.actionHomeFragmentToMoviesFragment("trendingMovies")
             findNavController().navigate(action)
         }
 
@@ -54,11 +57,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     }
 
+    override fun onStart() {
+        super.onStart()
+    }
+
 
     fun initRecyclerview(list:List<Result>){
         recycler_trending.apply {
             layoutManager = LinearLayoutManager(requireActivity(),LinearLayoutManager.HORIZONTAL, false)
-            val adbpt = MovieListAdapter()
+            val adbpt = HomeMovieListAdapter()
             adapter = adbpt
             adbpt.setData(list)
         }

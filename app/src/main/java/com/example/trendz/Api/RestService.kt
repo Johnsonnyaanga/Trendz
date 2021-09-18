@@ -1,5 +1,6 @@
 package com.example.trendz.Api
 
+import com.example.trendz.models.Actors.Actors
 import com.example.trendz.models.Genre.GenreResponse
 import com.example.trendz.models.Movie.Genre
 import com.example.trendz.models.Movie.Movie
@@ -57,6 +58,13 @@ interface RestService {
         @Query("api_key") apiKey: String,
         @Query("language") language: String?
     ): Response<Movie>
+
+    @GET("movie/{movie_id}/credits")
+    suspend fun fetchMovieActors(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String,
+        @Query("language") language: String?
+    ): Response<Actors>
 
 
 

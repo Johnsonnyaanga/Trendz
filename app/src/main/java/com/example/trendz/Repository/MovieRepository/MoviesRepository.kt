@@ -1,6 +1,7 @@
 package com.example.trendz.Repository.MovieRepository
 
 import com.example.trendz.Api.RestService
+import com.example.trendz.models.Actors.Actors
 import com.example.trendz.models.Genre.GenreResponse
 import com.example.trendz.models.People.People
 import com.example.trendz.models.PopularMovies.PopularMovieResponse
@@ -55,5 +56,12 @@ class MoviesRepository @Inject constructor (
         language: String?,
         page: Int = 1,
     ) = restService.fetchPopularPeople(apiKey,language,page)
+
+
+    suspend fun fetchMovieActors(
+        movieId: Int,
+        apiKey: String,
+        language: String?
+    ) = restService.fetchMovieActors(movieId,apiKey,language)
 
 }

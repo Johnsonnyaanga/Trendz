@@ -8,18 +8,18 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
 import com.example.trendz.R
-import com.example.trendz.fragments.MoviesFragment.MoviesFragmentDirections
+import com.example.trendz.fragments.HomeFragment.HomeFragmentDirections
 import com.example.trendz.models.Result
 import com.example.trendz.utils.Constants.IMG_URL_INIT_PATH
 
 
-class MovieListAdapter: RecyclerView.Adapter<MovieListAdapter.MovieListViewHolder>() {
-
+class HomeMovieListAdapter: RecyclerView.Adapter<HomeMovieListAdapter.HMovieListViewHolder>() {
     private var movieslist = emptyList<Result>()
 
-    class MovieListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+    class HMovieListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val movieTitle: TextView
         val movieLogo:ImageView
         val movieCard:ConstraintLayout
@@ -31,21 +31,25 @@ class MovieListAdapter: RecyclerView.Adapter<MovieListAdapter.MovieListViewHolde
 
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieListViewHolder {
-        return MovieListViewHolder(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HMovieListViewHolder {
+        return HMovieListViewHolder(
             LayoutInflater.from(parent.context)
-            .inflate(R.layout.movie_view,parent,false))
+                .inflate(R.layout.movie_view, parent, false)
+        )
     }
 
-    override fun onBindViewHolder(holder: MovieListViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: HMovieListViewHolder, position: Int) {
         val ctx = holder.itemView.context
         val currentItem = movieslist[position]
 
         holder.apply {
             movieCard.setOnClickListener{
-                val action = MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(currentItem)
+                val action = HomeFragmentDirections.actionHomeFragmentToMovieDetailsFragment2(currentItem)
                 itemView.findNavController().navigate(action)
-
+                val circularProgressDrawable = CircularProgressDrawable(ctx)
+                circularProgressDrawable.strokeWidth = 5f
+                circularProgressDrawable.centerRadius = 30f
+                circularProgressDrawable.start()
 
 
             }

@@ -6,8 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trendz.Adapters.MovieListAdapter
@@ -43,6 +48,18 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
             MoviesFragmentArgs.fromBundle(it)
         }!!
 
+
+        val toolbar = view.findViewById<Toolbar>(R.id.toolbar_movies)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+        //setSupportActionBar(toolbar)
+        val navHost = requireActivity()
+                .supportFragmentManager
+                .findFragmentById(R.id.nav_host_fragment_cont) as NavHostFragment
+        val navController = navHost.findNavController()
+        NavigationUI.setupActionBarWithNavController(activity as AppCompatActivity, navController)
+
+
+
         displayMoviesList()
 
 
@@ -50,7 +67,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
     }
 
-    fun initRecyclerviewPopular(list:List<Result>){
+    private fun initRecyclerviewPopular(list:List<Result>){
         movies_recyclerView.apply {
             layoutManager = GridLayoutManager(requireActivity().applicationContext,3)
             val adbpt =MovieListAdapter()
@@ -61,15 +78,16 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
     }
 
     private fun displayMoviesList(){
-        val movieTypes = args.moviesList
-        if (movieTypes.equals("trendingMovies")){
-
-            getTrendingMovies()
-
-        } else if (movieTypes.equals("popularMovies")){
-            getPopularMovies()
-        }else{
-            getUpcomingMovies()
+        when (args.moviesList) {
+            "upcomingMovies" -> {
+                getUpcomingMovies()
+            }
+            "popularMovies" -> {
+                getPopularMovies()
+            }
+            else -> {
+                getTrendingMovies()
+            }
         }
 
     }
