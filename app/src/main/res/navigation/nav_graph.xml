@@ -30,7 +30,7 @@
     <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="com.example.trendz.fragments.MovieDetailsFragment.MovieDetailsFragment"
-        android:label="fragment_movie_details"
+        android:label="Details"
         tools:layout="@layout/fragment_movie_details" >
         <argument
             android:name="movieDetails"

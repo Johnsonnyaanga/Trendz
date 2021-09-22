@@ -9,6 +9,8 @@
     <color name="white">#FFFFFFFF</color>
 
     <color name="grey">#1C1C2C</color>
+    <color name="light_grey">#262639</color>
     <color name="grey_btm_nav">#4D1C1C2C</color>
     <color name="icon_tint">#56706A</color>
+
 </resources>

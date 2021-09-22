@@ -6,8 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.View
 import android.view.View.GONE
 import android.view.View.VISIBLE
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.CircularProgressDrawable
 import com.bumptech.glide.Glide
@@ -29,11 +34,29 @@ private  lateinit var args:MovieDetailsFragmentArgs
 lateinit var circularProgressDrawable:CircularProgressDrawable
 val movieDetailsViewModel: MovieDetailsViewModel by viewModels()
 
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         //progress_movieDetails.visibility = VISIBLE
-        //movieDetailsParentLayout.visibility = GONE
+        movieDetailsParentLayout.visibility = GONE
+        before_load.visibility = VISIBLE
+
+
+
+        //toobar
+        val toolbar = view.findViewById<Toolbar>(R.id.toolbar_movieDetails)
+        (activity as AppCompatActivity?)!!.setSupportActionBar(toolbar)
+        //(requireActivity() as AppCompatActivity).supportActionBar?.title = "Details"
+
+
+
+        //setSupportActionBar(toolbar)
+        val navHost = requireActivity()
+                .supportFragmentManager
+                .findFragmentById(R.id.nav_host_fragment_cont) as NavHostFragment
+        val navController = navHost.findNavController()
+        NavigationUI.setupActionBarWithNavController(activity as AppCompatActivity, navController)
 
 
         circularProgressDrawable = CircularProgressDrawable(requireActivity())
@@ -45,6 +68,8 @@ val movieDetailsViewModel: MovieDetailsViewModel by viewModels()
             fromBundle(it)
         }!!
         Log.d("argsdata",args.movieDetails.toString())
+
+
 
         //get All movie Actors
         movieDetailsViewModel.fetchMovieActors(
@@ -61,32 +86,29 @@ val movieDetailsViewModel: MovieDetailsViewModel by viewModels()
 
 
 
-
-    }
-
-    override fun onStart() {
-        super.onStart()
         getMovieActors()
         getMovieGenres()
 
         movieDetailsViewModel.movieDetailsResponse.observe(viewLifecycleOwner, Observer {
             if (it.isSuccessful){
-                //movieDetailsParentLayout.visibility = VISIBLE
+                movieDetailsParentLayout.visibility = VISIBLE
+                before_load.visibility = GONE
                 //progress_movieDetails.visibility = GONE
 
-            it.body()?.let { movie ->
-                movieDetails_title.text = movie.title
-                movieDetails_overview_text.text = movie.overview
-                Glide.with(requireContext())
+                it.body()?.let { movie ->
+                    movie_rate.text = movie.vote_average.toString()
+                    movieDetails_title.text = movie.title
+                    movieDetails_overview_text.text = movie.overview
+                    Glide.with(requireContext())
                         .load(Constants.IMG_URL_INIT_PATH +movie.poster_path)
                         .placeholder(circularProgressDrawable)
                         .into(movieDetails_back_drop_image)
-                Glide.with(requireContext())
+                    Glide.with(requireContext())
                         .load(Constants.IMG_URL_INIT_PATH +movie.backdrop_path)
                         .placeholder(circularProgressDrawable )
                         .into(movieDetails_small_image)
 
-            }
+                }
             }
         })
 
@@ -94,6 +116,14 @@ val movieDetailsViewModel: MovieDetailsViewModel by viewModels()
 
 
     }
+
+    override fun onStart() {
+        super.onStart()
+    }
+
+
+
+
 
     fun initRecyclerviewActors(list:List<Cast>){
         actors_recyclerView.apply {

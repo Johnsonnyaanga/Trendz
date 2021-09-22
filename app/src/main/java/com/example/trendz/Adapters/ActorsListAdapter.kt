@@ -18,6 +18,7 @@ class ActorsListAdapter(val list:List<Cast>):RecyclerView.Adapter<ActorsListAdap
 
     class ActorsListViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val actorProfileImage: ImageView = itemView.findViewById(R.id.actor_image)
+        val actorName:TextView = itemView.findViewById(R.id.actor_name)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActorsListViewHolder {
@@ -31,6 +32,7 @@ class ActorsListAdapter(val list:List<Cast>):RecyclerView.Adapter<ActorsListAdap
         val ctx = holder.itemView.context
         val currentItem = list[position]
        holder.apply {
+           actorName.text = currentItem.original_name
            Glide.with(ctx)
                .load(Constants.IMG_URL_INIT_PATH + currentItem.profile_path)
                .into(actorProfileImage)

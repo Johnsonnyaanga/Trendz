@@ -15,6 +15,7 @@ import com.example.trendz.R
 import com.example.trendz.fragments.PopularMoviesFragment.PopularViewModel
 import com.example.trendz.fragments.UpcomingMoviesFragment.UpcomingMoviesViewModel
 import com.example.trendz.models.Result
+import com.example.trendz.utils.GridSpacingItemDecoration
 import com.example.trendz.utils.InternetCheck
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -74,7 +75,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     fun initRecyclerviewUpcoming(list:List<Result>){
         recycler_upcoming_movies.apply {
             layoutManager = LinearLayoutManager(requireActivity(),LinearLayoutManager.HORIZONTAL, false)
-            val adbpt = MovieListAdapter()
+            val adbpt = HomeMovieListAdapter()
             adapter = adbpt
             adbpt.setData(list)
         }
@@ -83,7 +84,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     fun initRecyclerviewPopular(list:List<Result>){
         recycler_popular_movies.apply {
             layoutManager = LinearLayoutManager(requireActivity(),LinearLayoutManager.HORIZONTAL, false)
-            val adbpt =MovieListAdapter()
+            val adbpt =HomeMovieListAdapter()
             adapter = adbpt
             adbpt.setData(list)
         }

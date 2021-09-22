@@ -34,7 +34,7 @@ class HomeMovieListAdapter: RecyclerView.Adapter<HomeMovieListAdapter.HMovieList
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HMovieListViewHolder {
         return HMovieListViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.movie_view, parent, false)
+                .inflate(R.layout.linear_movie_view, parent, false)
         )
     }
 
