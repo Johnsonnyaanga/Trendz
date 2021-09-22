@@ -1,266 +1,291 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".fragments.HomeFragment.HomeFragment">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:visibility="gone"
+        android:background="@color/grey"
+        android:id="@+id/no_internet_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+      <com.google.android.material.progressindicator.LinearProgressIndicator
+          app:trackThickness="10dp"
+          app:layout_constraintStart_toStartOf="parent"
+          app:layout_constraintTop_toTopOf="parent"
+          app:layout_constraintEnd_toEndOf="parent"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
     <ScrollView
+        android:id="@+id/main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
 
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#161622"
-        android:padding="10dp"
-        >
+      <androidx.constraintlayout.widget.ConstraintLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:background="#161622"
+          android:padding="10dp"
+          >
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/header_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:id="@+id/header_layout"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:paddingTop="10dp"
+              android:paddingBottom="10dp"
+              app:layout_constraintEnd_toEndOf="parent"
+              app:layout_constraintStart_toStartOf="parent"
+              app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="10dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_profile"/>
-            <ImageView
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="10dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:src="@drawable/ic_search"/>
+              <ImageView
+                  android:layout_marginTop="10dp"
+                  android:layout_marginStart="10dp"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  android:layout_width="30dp"
+                  android:layout_height="30dp"
+                  android:src="@drawable/ic_profile"/>
+              <ImageView
+                  android:layout_marginTop="10dp"
+                  android:layout_marginEnd="10dp"
+                  app:layout_constraintEnd_toEndOf="parent"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintBottom_toBottomOf="parent"
+                  android:layout_width="30dp"
+                  android:layout_height="30dp"
+                  android:src="@drawable/ic_search"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/trends_movies"
-            app:layout_constraintTop_toBottomOf="@id/header_layout"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/trends_header"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_width="match_parent"
-                android:paddingBottom="10dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="12dp">
-                <TextView
-                    android:id="@+id/trending_txt"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="Trending"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="21sp"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    />
-                <TextView
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="10dp"
-                    app:layout_constraintStart_toEndOf="@id/trending_txt"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="movies"
-                    android:textAllCaps="true"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="11sp"
-                    android:textColor="#5F717C"
-                    />
-                <ImageView
-                    android:id="@+id/trending_movies_arrow"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:textAlignment="center"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_forward_arrow"/>
+          </androidx.constraintlayout.widget.ConstraintLayout>
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:id="@+id/trends_movies"
+              app:layout_constraintTop_toBottomOf="@id/header_layout"
+              app:layout_constraintStart_toStartOf="parent"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+              <androidx.constraintlayout.widget.ConstraintLayout
+                  android:id="@+id/trends_header"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  android:layout_width="match_parent"
+                  android:paddingBottom="10dp"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="12dp"
+                  android:layout_marginStart="10dp"
+                  android:layout_marginEnd="12dp">
+                  <TextView
+                      android:id="@+id/trending_txt"
+                      app:layout_constraintStart_toStartOf="parent"
+                      app:layout_constraintTop_toTopOf="parent"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textAlignment="center"
+                      android:text="Trending"
+                      android:fontFamily="@font/poppins_bold"
+                      android:textSize="21sp"
+                      android:gravity="center"
+                      android:textColor="@color/white"
+                      />
+                  <TextView
+                      android:layout_marginTop="15dp"
+                      android:layout_marginStart="10dp"
+                      app:layout_constraintStart_toEndOf="@id/trending_txt"
+                      app:layout_constraintTop_toTopOf="parent"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="movies"
+                      android:textAllCaps="true"
+                      android:fontFamily="@font/poppins_bold"
+                      android:textSize="11sp"
+                      android:textColor="#5F717C"
+                      />
+                  <ImageView
+                      android:id="@+id/trending_movies_arrow"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      android:textAlignment="center"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      app:layout_constraintTop_toTopOf="parent"
+                      android:layout_width="30dp"
+                      android:layout_height="30dp"
+                      android:src="@drawable/ic_forward_arrow"/>
 
 
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+              </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/trends_header"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:id="@+id/recycler_trending"/>
+              <androidx.recyclerview.widget.RecyclerView
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toBottomOf="@id/trends_header"
+                  android:layout_width="match_parent"
+                  android:layout_height="150dp"
+                  android:id="@+id/recycler_trending"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/trends_tvshows"
-            app:layout_constraintTop_toBottomOf="@id/trends_movies"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/trendstvshows_header"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_width="match_parent"
-                android:paddingBottom="12dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp">
-                <TextView
-                    android:id="@+id/trendingtvshow_txt"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="Popular"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="21sp"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    />
-                <TextView
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="10dp"
-                    app:layout_constraintStart_toEndOf="@id/trendingtvshow_txt"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="movies"
-                    android:textAllCaps="true"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="11sp"
-                    android:textColor="#5F717C"
-                    />
-                <ImageView
-                    android:id="@+id/popular_movies_arrow"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:textAlignment="center"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_forward_arrow"/>
-
-
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/trendstvshows_header"
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="150dp"
-                android:id="@+id/recycler_popular_movies"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/trendsnetflix_movies"
-            app:layout_constraintTop_toBottomOf="@id/trends_tvshows"
-            app:layout_constraintStart_toStartOf="parent"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/trendsnetflix_header"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_width="match_parent"
-                android:paddingBottom="12dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp">
-                <TextView
-                    android:id="@+id/trendingnetflix_txt"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:text="Upcoming"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="21sp"
-                    android:gravity="center"
-                    android:textColor="@color/white"
-                    />
-                <TextView
-                    android:layout_marginTop="15dp"
-                    android:layout_marginStart="10dp"
-                    app:layout_constraintStart_toEndOf="@id/trendingnetflix_txt"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="movies"
-                    android:textAllCaps="true"
-                    android:fontFamily="@font/poppins_bold"
-                    android:textSize="11sp"
-                    android:textColor="#5F717C"
-                    />
-                <ImageView
-                    android:id="@+id/upcoming_movies_arrow"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:src="@drawable/ic_forward_arrow"/>
+          </androidx.constraintlayout.widget.ConstraintLayout>
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:id="@+id/trends_tvshows"
+              app:layout_constraintTop_toBottomOf="@id/trends_movies"
+              app:layout_constraintStart_toStartOf="parent"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+              <androidx.constraintlayout.widget.ConstraintLayout
+                  android:id="@+id/trendstvshows_header"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  android:layout_width="match_parent"
+                  android:paddingBottom="12dp"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="12dp"
+                  android:layout_marginStart="10dp"
+                  android:layout_marginEnd="10dp">
+                  <TextView
+                      android:id="@+id/trendingtvshow_txt"
+                      app:layout_constraintStart_toStartOf="parent"
+                      app:layout_constraintTop_toTopOf="parent"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textAlignment="center"
+                      android:text="Popular"
+                      android:fontFamily="@font/poppins_bold"
+                      android:textSize="21sp"
+                      android:gravity="center"
+                      android:textColor="@color/white"
+                      />
+                  <TextView
+                      android:layout_marginTop="15dp"
+                      android:layout_marginStart="10dp"
+                      app:layout_constraintStart_toEndOf="@id/trendingtvshow_txt"
+                      app:layout_constraintTop_toTopOf="parent"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="movies"
+                      android:textAllCaps="true"
+                      android:fontFamily="@font/poppins_bold"
+                      android:textSize="11sp"
+                      android:textColor="#5F717C"
+                      />
+                  <ImageView
+                      android:id="@+id/popular_movies_arrow"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      android:textAlignment="center"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      app:layout_constraintTop_toTopOf="parent"
+                      android:layout_width="30dp"
+                      android:layout_height="30dp"
+                      android:src="@drawable/ic_forward_arrow"/>
 
 
 
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+              </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.recyclerview.widget.RecyclerView
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/trendsnetflix_header"
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_height="150dp"
-                android:id="@+id/recycler_upcoming_movies"/>
+              <androidx.recyclerview.widget.RecyclerView
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toBottomOf="@id/trendstvshows_header"
+                  android:layout_width="match_parent"
+                  android:orientation="horizontal"
+                  android:layout_height="150dp"
+                  android:id="@+id/recycler_popular_movies"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+          </androidx.constraintlayout.widget.ConstraintLayout>
+          <androidx.constraintlayout.widget.ConstraintLayout
+              android:id="@+id/trendsnetflix_movies"
+              app:layout_constraintTop_toBottomOf="@id/trends_tvshows"
+              app:layout_constraintStart_toStartOf="parent"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+              <androidx.constraintlayout.widget.ConstraintLayout
+                  android:id="@+id/trendsnetflix_header"
+                  app:layout_constraintTop_toTopOf="parent"
+                  app:layout_constraintStart_toStartOf="parent"
+                  android:layout_width="match_parent"
+                  android:paddingBottom="12dp"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="12dp"
+                  android:layout_marginStart="10dp"
+                  android:layout_marginEnd="10dp">
+                  <TextView
+                      android:id="@+id/trendingnetflix_txt"
+                      app:layout_constraintStart_toStartOf="parent"
+                      app:layout_constraintTop_toTopOf="parent"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:textAlignment="center"
+                      android:text="Upcoming"
+                      android:fontFamily="@font/poppins_bold"
+                      android:textSize="21sp"
+                      android:gravity="center"
+                      android:textColor="@color/white"
+                      />
+                  <TextView
+                      android:layout_marginTop="15dp"
+                      android:layout_marginStart="10dp"
+                      app:layout_constraintStart_toEndOf="@id/trendingnetflix_txt"
+                      app:layout_constraintTop_toTopOf="parent"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="movies"
+                      android:textAllCaps="true"
+                      android:fontFamily="@font/poppins_bold"
+                      android:textSize="11sp"
+                      android:textColor="#5F717C"
+                      />
+                  <ImageView
+                      android:id="@+id/upcoming_movies_arrow"
+                      app:layout_constraintBottom_toBottomOf="parent"
+                      app:layout_constraintEnd_toEndOf="parent"
+                      app:layout_constraintTop_toTopOf="parent"
+                      android:layout_width="30dp"
+                      android:layout_height="30dp"
+                      android:src="@drawable/ic_forward_arrow"/>
+
+
+
+
+              </androidx.constraintlayout.widget.ConstraintLayout>
+
+              <androidx.recyclerview.widget.RecyclerView
+                  app:layout_constraintStart_toStartOf="parent"
+                  app:layout_constraintTop_toBottomOf="@id/trendsnetflix_header"
+                  android:layout_width="match_parent"
+                  android:orientation="horizontal"
+                  android:layout_height="150dp"
+                  android:id="@+id/recycler_upcoming_movies"/>
+
+          </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+  </androidx.constraintlayout.widget.ConstraintLayout>
+
+
     </ScrollView>
 
 
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

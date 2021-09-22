@@ -1,5 +1,7 @@
 package com.example.trendz.models.Actors
 
+import java.io.Serializable
+
 data class Cast(
     val adult: Boolean,
     val cast_id: Int,
@@ -13,4 +15,4 @@ data class Cast(
     val original_name: String,
     val popularity: Double,
     val profile_path: String
-)
+):Serializable

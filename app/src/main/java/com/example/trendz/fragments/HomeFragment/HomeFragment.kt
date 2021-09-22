@@ -38,13 +38,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
 
+
+
+
+
+
         popular_movies_arrow.setOnClickListener{
-            val action = HomeFragmentDirections.actionHomeFragmentToMoviesFragment("trendingMovies")
+            val action = HomeFragmentDirections.actionHomeFragmentToMoviesFragment("popularMovies")
             findNavController().navigate(action)
 
         }
         upcoming_movies_arrow.setOnClickListener{
-            val action = HomeFragmentDirections.actionHomeFragmentToMoviesFragment("trendingMovies")
+            val action = HomeFragmentDirections.actionHomeFragmentToMoviesFragment("upcomingMovies")
             findNavController().navigate(action)
 
         }
@@ -116,12 +121,15 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }catch (e:Exception){
                 Log.d("error_response",e.message.toString())
                 toastMessage("Network Error")
+
             }
 
 
         })
     }else{
-           toastMessage("Network Error")
+            no_internet_layout.visibility = View.VISIBLE
+            main_layout.visibility = View.GONE
+            toastMessage("Network Error")
     }
 
 
