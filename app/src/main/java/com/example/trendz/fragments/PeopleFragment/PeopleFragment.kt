@@ -16,7 +16,7 @@ class PeopleFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_people, container, false)
-        // Inflate the layout for this fragment
+
         return view
     }
 

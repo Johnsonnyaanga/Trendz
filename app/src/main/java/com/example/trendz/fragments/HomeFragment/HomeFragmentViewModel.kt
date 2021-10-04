@@ -12,9 +12,11 @@ import com.example.trendz.utils.Constants.API_KEY
 import com.example.trendz.utils.Constants.LANG_US
 import com.example.trendz.utils.Constants.MEDIA_TYPE_MOVIE
 import com.example.trendz.utils.Constants.TIME_WINDOW_WEEK
+import com.example.trendz.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -36,6 +38,21 @@ class HomeFragmentViewModel @Inject constructor(
          Log.d("viewmodela",moviesRepository.fetchTrendingMovies(mediaType,timeWindow,apiKey,language).toString())
          _tredingMoviesResponse.value = moviesRepository.fetchTrendingMovies(mediaType,timeWindow,apiKey,language)
      }
+
+
+
+
+
+    fun handleTrendingMoviesResponse(response: Response<TrendingResponse>)
+    : Resource<TrendingResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                return Resource.Success(resultResponse)
+            }
+        }
+        return Resource.Error(response.message(), null)
+    }
+
 
 
 

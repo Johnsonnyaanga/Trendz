@@ -29,8 +29,7 @@ class ActorDetailsFragment : Fragment(R.layout.fragment_actor_details) {
            ActorDetailsFragmentArgs.fromBundle(it)
         }!!
         Log.d("castdata",args.Cast.toString())
-        mainActivity.toastMessage(args.Cast.name
-        )
+        //mainActivity.toastMessage(args.Cast.name)
 
     }
 
