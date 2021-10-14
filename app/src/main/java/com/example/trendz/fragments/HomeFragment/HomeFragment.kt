@@ -17,6 +17,7 @@ import com.example.trendz.fragments.UpcomingMoviesFragment.UpcomingMoviesViewMod
 import com.example.trendz.models.Result
 import com.example.trendz.utils.GridSpacingItemDecoration
 import com.example.trendz.utils.InternetCheck
+import com.example.trendz.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
 
@@ -31,6 +32,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
 
         displayTrendingMovies()
         displayPopularMovies()
@@ -102,7 +104,32 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     fun displayTrendingMovies() {
         val internetCheck =  InternetCheck(requireActivity().application)
 
-        if (internetCheck.hasInternetConnection()){
+
+        viewmodelTrendingMovies.tredingMoviesResponseResource.observe(viewLifecycleOwner, { response->
+            Log.d("newdata",response.toString())
+
+            when(response){
+                is Resource.Success -> {
+                    response.data?.let {
+                        initRecyclerview(it.results)
+                    }
+                }
+
+                is Resource.Error ->{
+                    toastMessage("an error occured: ${response.message}")
+                }
+
+                is Resource.Loading ->{
+                    no_internet_layout.visibility = View.VISIBLE
+                    main_layout.visibility = View.GONE
+
+                }
+
+
+                }
+        })
+
+     /*   if (internetCheck.hasInternetConnection()){
 
         viewmodelTrendingMovies.tredingMoviesResponse.observe(viewLifecycleOwner, { res->
             try {
@@ -130,7 +157,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             no_internet_layout.visibility = View.VISIBLE
             main_layout.visibility = View.GONE
             toastMessage("Network Error")
-    }
+    }*/
 
 
     }
@@ -189,6 +216,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }else{
             toastMessage("Network Error")
         }
+
+
+
+
+
+
+
     }
 
 
