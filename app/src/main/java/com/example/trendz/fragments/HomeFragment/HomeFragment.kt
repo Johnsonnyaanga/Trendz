@@ -11,6 +11,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.trendz.Adapters.HomeMovieListAdapter
 import com.example.trendz.Adapters.MovieListAdapter
+import com.example.trendz.MainActivity
 import com.example.trendz.R
 import com.example.trendz.fragments.PopularMoviesFragment.PopularViewModel
 import com.example.trendz.fragments.UpcomingMoviesFragment.UpcomingMoviesViewModel
@@ -20,6 +21,7 @@ import com.example.trendz.utils.InternetCheck
 import com.example.trendz.utils.Resource
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_home.*
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -28,6 +30,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     val viewmodelTrendingMovies:HomeFragmentViewModel by viewModels()
     val viewmodelPopularMovies: PopularViewModel by viewModels()
     val viewmodelUpcomingMovies: UpcomingMoviesViewModel by viewModels()
+    @Inject
+    lateinit var mainActivity: MainActivity
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -169,18 +173,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         if (internetCheck.hasInternetConnection()){
 
             viewmodelPopularMovies.popularMoviesResponse.observe(viewLifecycleOwner, Observer { res->
-                try {
-                    if (res.isSuccessful){
-                        val result =  res.body()
-                        if (result != null) {
-                            initRecyclerviewPopular(result.results)
+                when(res){
+                    is Resource.Success -> {
+                        res.data?.let {
+                            initRecyclerviewPopular(it.results)
                         }
-                    }else{
-                        toastMessage("Network Error")
                     }
-                }catch (e:Exception){
-                    Log.d("error_response",e.message.toString())
-                    toastMessage("Network Error")
+
+                    is Resource.Error ->{
+                        mainActivity.toastMessage("an error occured: ${res.message}")
+                    }
+
+                    is Resource.Loading ->{
+                        no_internet_layout.visibility = View.VISIBLE
+                        main_layout.visibility = View.GONE
+
+                    }
+
+
                 }
 
 
@@ -197,18 +207,27 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         if (internetCheck.hasInternetConnection()){
 
             viewmodelUpcomingMovies.upComingMoviesResponse.observe(viewLifecycleOwner, Observer { res->
-                try {
-                    if (res.isSuccessful){
-                        val result =  res.body()
-                        if (result != null) {
-                            initRecyclerviewUpcoming(result.results)
+                Log.d("upcomingres",res.toString())
+                Log.d("upcomingres",res.data.toString())
+
+                when(res){
+                    is Resource.Success -> {
+                        res.data?.let {
+                            initRecyclerviewUpcoming(it.results)
                         }
-                    }else{
-                        toastMessage("Network Error")
                     }
-                }catch (e:Exception){
-                    Log.d("error_response",e.message.toString())
-                    toastMessage("Network Error")
+
+                    is Resource.Error ->{
+                        mainActivity.toastMessage("an error occured: ${res.message}")
+                    }
+
+                    is Resource.Loading ->{
+                        no_internet_layout.visibility = View.VISIBLE
+                        main_layout.visibility = View.GONE
+
+                    }
+
+
                 }
 
 

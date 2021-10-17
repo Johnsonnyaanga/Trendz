@@ -26,10 +26,7 @@ import javax.inject.Inject
 class HomeFragmentViewModel @Inject constructor(
     val moviesRepository: MoviesRepository
 ):ViewModel(){
-    val trendMoviesResponse=MutableLiveData<Resource<TrendingResponse>>()
     var trendResponse: TrendingResponse? = null
-    var breakingNewsPage = 1
-
     @Inject
     lateinit var internetCheck:InternetCheck
 
@@ -37,19 +34,10 @@ class HomeFragmentViewModel @Inject constructor(
 
    init {
        fetchTrendingMovies(MEDIA_TYPE_MOVIE, TIME_WINDOW_WEEK,API_KEY, LANG_US)
-       getTrendingMovies(MEDIA_TYPE_MOVIE, TIME_WINDOW_WEEK,API_KEY, LANG_US)
    }
 
-    fun getTrendingMovies( mediaType: String,
-                           timeWindow: String,
-                           apiKey: String,
-                           language: String?) = viewModelScope.launch {
-        safeTrendingMoviesCall(mediaType,timeWindow,apiKey,language)
-    }
 
-    val _tredingMoviesResponse = MutableLiveData<Response<TrendingResponse>>()
     val _tredingMoviesResponseResource = MutableLiveData<Resource<TrendingResponse>>()
-    val tredingMoviesResponse:LiveData<Response<TrendingResponse>> = _tredingMoviesResponse
     val tredingMoviesResponseResource:LiveData<Resource<TrendingResponse>> = _tredingMoviesResponseResource
      fun fetchTrendingMovies(
          mediaType: String,
@@ -59,7 +47,6 @@ class HomeFragmentViewModel @Inject constructor(
     ) = viewModelScope.launch {
          Log.d("viewmodela",moviesRepository.fetchTrendingMovies(mediaType,timeWindow,apiKey,language).toString())
          val res = moviesRepository.fetchTrendingMovies(mediaType,timeWindow,apiKey,language)
-         _tredingMoviesResponse.value = res
          val resourceRes = handleTrendingMoviesResponse(res)
          _tredingMoviesResponseResource.value = resourceRes
 
@@ -71,7 +58,6 @@ class HomeFragmentViewModel @Inject constructor(
 
     fun handleTrendingMoviesResponse(response: Response<TrendingResponse>)
     : Resource<TrendingResponse> {
-
         if (response.isSuccessful) {
             response.body()?.let { resultResponse ->
                 trendResponse = resultResponse
@@ -82,31 +68,6 @@ class HomeFragmentViewModel @Inject constructor(
     }
 
 
-
-     private suspend fun safeTrendingMoviesCall(mediaType: String,
-                                                timeWindow: String,
-                                                apiKey: String,
-                                                language: String?) {
-
-        trendMoviesResponse.postValue(Resource.Loading())
-        try {
-            if (internetCheck.hasInternetConnection()) {
-                val response = moviesRepository.fetchTrendingMovies(mediaType,timeWindow,apiKey,language)
-                trendMoviesResponse.postValue(handleTrendingMoviesResponse(response))
-
-            } else {
-                trendMoviesResponse.postValue(Resource.Error("No Internet Connection", null))
-            }
-
-        } catch (t: Throwable) {
-            when (t) {
-                is IOException -> trendMoviesResponse.postValue(Resource.Error("NetworkFailure", null))
-                else -> trendMoviesResponse.postValue(Resource.Error("Conversion Error", null))
-            }
-
-        }
-
-    }
 
 
 

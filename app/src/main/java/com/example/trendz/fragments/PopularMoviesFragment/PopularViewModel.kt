@@ -7,9 +7,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.trendz.Repository.MovieRepository.MoviesRepository
 import com.example.trendz.models.PopularMovies.PopularMovieResponse
-import com.example.trendz.utils.Constants
 import com.example.trendz.utils.Constants.API_KEY
 import com.example.trendz.utils.Constants.LANG_US
+import com.example.trendz.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
@@ -19,13 +19,15 @@ import javax.inject.Inject
 class PopularViewModel @Inject constructor(
     val moviesRepository: MoviesRepository
 ):ViewModel() {
+    var popularmoviesResponseVar:PopularMovieResponse? = null
+
 
     init {
         fetchPopularMovies(API_KEY, LANG_US)
     }
 
-    val _popularMoviesResponse = MutableLiveData<Response<PopularMovieResponse>>()
-    val popularMoviesResponse: LiveData<Response<PopularMovieResponse>> = _popularMoviesResponse
+    val _popularMoviesResponse = MutableLiveData<Resource<PopularMovieResponse>>()
+    val popularMoviesResponse: LiveData<Resource<PopularMovieResponse>> = _popularMoviesResponse
 
     fun fetchPopularMovies(
         apiKey: String,
@@ -33,7 +35,21 @@ class PopularViewModel @Inject constructor(
         page: Int = 1
     ) = viewModelScope.launch {
         Log.d("ppmovie",moviesRepository.fetchPopularMovies(apiKey,language,page).toString())
-        _popularMoviesResponse.value = moviesRepository.fetchPopularMovies(apiKey,language,page)
+       val res = moviesRepository.fetchPopularMovies(apiKey,language,page)
+        _popularMoviesResponse.value = handlePopularMoviesResponse(res)
+    }
+
+
+
+    private fun handlePopularMoviesResponse(response: Response<PopularMovieResponse>)
+            : Resource<PopularMovieResponse> {
+        if (response.isSuccessful) {
+            response.body()?.let { resultResponse ->
+                popularmoviesResponseVar= resultResponse
+                return Resource.Success(popularmoviesResponseVar?:resultResponse)
+            }
+        }
+        return Resource.Error(response.message(), null)
     }
 
 }
