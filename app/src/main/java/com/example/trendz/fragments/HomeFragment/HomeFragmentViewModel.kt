@@ -37,20 +37,40 @@ class HomeFragmentViewModel @Inject constructor(
    }
 
 
-    val _tredingMoviesResponseResource = MutableLiveData<Resource<TrendingResponse>>()
-    val tredingMoviesResponseResource:LiveData<Resource<TrendingResponse>> = _tredingMoviesResponseResource
+    val _tredingMoviesResponseResource:MutableLiveData<Resource<TrendingResponse>> = MutableLiveData()
+    //val tredingMoviesResponseResource:LiveData<Resource<TrendingResponse>> = _tredingMoviesResponseResource
      fun fetchTrendingMovies(
          mediaType: String,
          timeWindow: String,
         apiKey: String,
         language: String?
     ) = viewModelScope.launch {
-         Log.d("viewmodela",moviesRepository.fetchTrendingMovies(mediaType,timeWindow,apiKey,language).toString())
-         val res = moviesRepository.fetchTrendingMovies(mediaType,timeWindow,apiKey,language)
-         val resourceRes = handleTrendingMoviesResponse(res)
-         _tredingMoviesResponseResource.value = resourceRes
-
+            /* Log.d("viewmodela",moviesRepository.fetchTrendingMovies(mediaType,timeWindow,apiKey,language).toString())
+             val res = moviesRepository.fetchTrendingMovies(mediaType,timeWindow,apiKey,language)
+             val resourceRes = handleTrendingMoviesResponse(res)
+             _tredingMoviesResponseResource.value = resourceRes*/
+        safeCall(mediaType, timeWindow, apiKey, language)
      }
+
+    suspend  fun safeCall(mediaType: String,
+                 timeWindow: String,
+                 apiKey: String,
+                 language: String?) = run {
+       //_tredingMoviesResponseResource.value = Resource.Loading()
+        try {
+            Log.d("viewmodela",moviesRepository.fetchTrendingMovies(mediaType,timeWindow,apiKey,language).toString())
+            val res = moviesRepository.fetchTrendingMovies(mediaType,timeWindow,apiKey,language)
+            val resourceRes = handleTrendingMoviesResponse(res)
+            _tredingMoviesResponseResource.postValue(resourceRes)
+
+        }catch (t:Throwable){
+            when(t)  {
+                is IOException -> _tredingMoviesResponseResource.value =  Resource.Error("Network Error",null)
+                    else -> _tredingMoviesResponseResource.postValue(Resource.Error("Conversion Error", null))
+
+                }
+        }
+    }
 
 
 

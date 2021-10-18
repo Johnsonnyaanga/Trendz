@@ -174,7 +174,7 @@ class MoviesFragment : Fragment(R.layout.fragment_movies) {
 
         if (internetCheck.hasInternetConnection()){
 
-            viewmodelTrendingMovies.tredingMoviesResponseResource.observe(viewLifecycleOwner, { res ->
+            viewmodelTrendingMovies._tredingMoviesResponseResource.observe(viewLifecycleOwner, { res ->
 
                 when(res){
                     is Resource.Success -> {

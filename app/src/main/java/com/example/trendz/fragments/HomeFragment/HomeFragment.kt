@@ -109,7 +109,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val internetCheck =  InternetCheck(requireActivity().application)
 
 
-        viewmodelTrendingMovies.tredingMoviesResponseResource.observe(viewLifecycleOwner, { response->
+        viewmodelTrendingMovies._tredingMoviesResponseResource.observe(viewLifecycleOwner, { response->
             Log.d("newdata",response.toString())
 
             when(response){
