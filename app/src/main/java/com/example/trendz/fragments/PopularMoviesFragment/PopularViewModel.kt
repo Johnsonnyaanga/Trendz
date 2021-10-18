@@ -13,6 +13,7 @@ import com.example.trendz.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,9 +35,29 @@ class PopularViewModel @Inject constructor(
         language: String?,
         page: Int = 1
     ) = viewModelScope.launch {
-        Log.d("ppmovie",moviesRepository.fetchPopularMovies(apiKey,language,page).toString())
+        /*Log.d("ppmovie",moviesRepository.fetchPopularMovies(apiKey,language,page).toString())
        val res = moviesRepository.fetchPopularMovies(apiKey,language,page)
-        _popularMoviesResponse.value = handlePopularMoviesResponse(res)
+        _popularMoviesResponse.value = handlePopularMoviesResponse(res)*/
+        safePopularMvoiesCall(apiKey, language, page)
+    }
+
+
+    private suspend  fun safePopularMvoiesCall(apiKey: String,
+                                               language: String?,
+                                               page: Int = 1) = run {
+        //_tredingMoviesResponseResource.value = Resource.Loading()
+        try {
+            Log.d("ppmovie",moviesRepository.fetchPopularMovies(apiKey,language,page).toString())
+            val res = moviesRepository.fetchPopularMovies(apiKey,language,page)
+            _popularMoviesResponse.value = handlePopularMoviesResponse(res)
+
+        }catch (t:Throwable){
+            when(t)  {
+                is IOException -> _popularMoviesResponse.value =  Resource.Error("Network Error",null)
+                else -> _popularMoviesResponse.postValue(Resource.Error("Conversion Error", null))
+
+            }
+        }
     }
 
 

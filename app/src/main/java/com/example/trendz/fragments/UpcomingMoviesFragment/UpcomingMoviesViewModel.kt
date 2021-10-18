@@ -15,6 +15,7 @@ import com.example.trendz.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import retrofit2.Response
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,9 +35,10 @@ class UpcomingMoviesViewModel @Inject constructor(
         language: String?,
         page: Int = 1
     ) = viewModelScope.launch {
-        Log.d("ppmovie", moviesRepository.fetchUpcomingMovies(apiKey,language,page).toString())
+       /* Log.d("ppmovie", moviesRepository.fetchUpcomingMovies(apiKey,language,page).toString())
         val res = moviesRepository.fetchUpcomingMovies(apiKey,language,page)
-        _upComingMoviesResponse.value = handleUpcomingMoviesResponse(res)
+        _upComingMoviesResponse.value = handleUpcomingMoviesResponse(res)*/
+        safeUpcomingMoviesCall(apiKey, language, page)
     }
 
     private fun handleUpcomingMoviesResponse(response: Response<UpcomingMovieResponse>)
@@ -48,6 +50,25 @@ class UpcomingMoviesViewModel @Inject constructor(
             }
         }
         return Resource.Error(response.message(), null)
+    }
+
+
+    suspend  fun safeUpcomingMoviesCall( apiKey: String,
+                                        language: String?,
+                                        page: Int = 1) = run {
+        //_tredingMoviesResponseResource.value = Resource.Loading()
+        try {
+            Log.d("ppmovie", moviesRepository.fetchUpcomingMovies(apiKey,language,page).toString())
+            val res = moviesRepository.fetchUpcomingMovies(apiKey,language,page)
+            _upComingMoviesResponse.value = handleUpcomingMoviesResponse(res)
+
+        }catch (t:Throwable){
+            when(t)  {
+                is IOException -> _upComingMoviesResponse.value =  Resource.Error("Network Error",null)
+                else -> _upComingMoviesResponse.postValue(Resource.Error("Conversion Error", null))
+
+            }
+        }
     }
 
 

@@ -38,16 +38,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
 
 
-        displayTrendingMovies()
-        displayPopularMovies()
-        displayUpcomingMovies()
-
-
-
-
-
-
-
+        displayAll()
+        retry_btn.setOnClickListener{
+            displayTrendingMovies()
+        }
 
         popular_movies_arrow.setOnClickListener{
             val action = HomeFragmentDirections.actionHomeFragmentToMoviesFragment("popularMovies")
@@ -69,9 +63,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     }
 
+    private fun displayAll(){
+        displayTrendingMovies()
+        displayPopularMovies()
+        displayUpcomingMovies()
+    }
+
+
     override fun onStart() {
         super.onStart()
     }
+
+
 
 
     fun initRecyclerview(list:List<Result>){
@@ -109,7 +112,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val internetCheck =  InternetCheck(requireActivity().application)
 
 
-        viewmodelTrendingMovies._tredingMoviesResponseResource.observe(viewLifecycleOwner, { response->
+        viewmodelTrendingMovies.tredingMoviesResponseResource.observe(viewLifecycleOwner, { response->
             Log.d("newdata",response.toString())
 
             when(response){
@@ -117,10 +120,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     response.data?.let {
                         initRecyclerview(it.results)
                     }
+                    no_internet_layout.visibility = View.GONE
+                    main_layout.visibility = View.VISIBLE
                 }
 
                 is Resource.Error ->{
                     toastMessage("an error occured: ${response.message}")
+                    no_internet_layout.visibility = View.VISIBLE
+                    main_layout.visibility = View.GONE
                 }
 
                 is Resource.Loading ->{

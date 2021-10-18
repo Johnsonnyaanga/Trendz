@@ -1,14 +1,9 @@
 package com.example.trendz.fragments.HomeFragment
 
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.NetworkCapabilities
-import android.os.Build
 import android.util.Log
 import androidx.lifecycle.*
 
 import com.example.trendz.Repository.MovieRepository.MoviesRepository
-import com.example.trendz.di.TrendzApp
 import com.example.trendz.models.Trending.TrendingResponse
 import com.example.trendz.utils.Constants.API_KEY
 import com.example.trendz.utils.Constants.LANG_US
@@ -38,7 +33,7 @@ class HomeFragmentViewModel @Inject constructor(
 
 
     val _tredingMoviesResponseResource:MutableLiveData<Resource<TrendingResponse>> = MutableLiveData()
-    //val tredingMoviesResponseResource:LiveData<Resource<TrendingResponse>> = _tredingMoviesResponseResource
+    val tredingMoviesResponseResource:LiveData<Resource<TrendingResponse>> = _tredingMoviesResponseResource
      fun fetchTrendingMovies(
          mediaType: String,
          timeWindow: String,
@@ -49,13 +44,13 @@ class HomeFragmentViewModel @Inject constructor(
              val res = moviesRepository.fetchTrendingMovies(mediaType,timeWindow,apiKey,language)
              val resourceRes = handleTrendingMoviesResponse(res)
              _tredingMoviesResponseResource.value = resourceRes*/
-        safeCall(mediaType, timeWindow, apiKey, language)
+        safeTrendingNewsCall(mediaType, timeWindow, apiKey, language)
      }
 
-    suspend  fun safeCall(mediaType: String,
-                 timeWindow: String,
-                 apiKey: String,
-                 language: String?) = run {
+    suspend  fun safeTrendingNewsCall(mediaType: String,
+                                      timeWindow: String,
+                                      apiKey: String,
+                                      language: String?) = run {
        //_tredingMoviesResponseResource.value = Resource.Loading()
         try {
             Log.d("viewmodela",moviesRepository.fetchTrendingMovies(mediaType,timeWindow,apiKey,language).toString())
