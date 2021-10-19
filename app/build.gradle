@@ -113,4 +113,12 @@ dependencies {
 
     // Testing Navigation
     androidTestImplementation "androidx.navigation:navigation-testing:$nav_version"
+
+    //pagination
+    implementation "androidx.paging:paging-runtime-ktx:3.1.0-beta01"
+
+
+
+    //datastore
+    implementation "androidx.datastore:datastore-preferences:1.0.0-alpha08"
 }

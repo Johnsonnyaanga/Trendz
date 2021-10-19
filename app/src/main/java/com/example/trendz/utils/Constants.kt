@@ -16,6 +16,9 @@ object Constants {
     const val TIME_WINDOW_WEEK = "week"
     const val IMG_URL_INIT_PATH = "https://image.tmdb.org/t/p/w500"
 
+    const val STARTING_OFFSET_INDEX = 0
+
+
 
 
 }
